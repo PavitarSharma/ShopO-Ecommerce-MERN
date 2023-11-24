@@ -76,8 +76,6 @@ const Login = () => {
         navigate("/vendor");
       }
     } catch (error) {
-      console.log(error);
-
       let message;
 
       if (error instanceof AxiosError) {

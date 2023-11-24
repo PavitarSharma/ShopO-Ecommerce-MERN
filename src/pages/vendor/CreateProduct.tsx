@@ -1,11 +1,15 @@
 import Editor from "@/components/Layout/Editor";
 import { Button } from "@/components/ui/button";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useCategories from "@/hooks/useCategories";
+import { handleApiError } from "@/utils/handleApiError";
 import { Category } from "@/utils/types";
+import { AxiosError } from "axios";
 import { useCallback, useMemo, useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import { Helmet } from "react-helmet";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import Select from "react-select";
 
 interface IOption {
@@ -23,15 +27,17 @@ interface IFormInput {
   stock: string;
 }
 const CreateProduct = () => {
+  const axiosPrivate = useAxiosPrivate();
   const { data: categorires } = useCategories();
   const [images, setImages] = useState<File[]>([]);
-
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
+    reset
   } = useForm<IFormInput>();
 
   const options: IOption[] = useMemo(() => {
@@ -60,7 +66,7 @@ const CreateProduct = () => {
   );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const {
       name,
       description,
@@ -83,6 +89,31 @@ const CreateProduct = () => {
     images.map((file) => {
       formdata.append("images", file);
     });
+
+
+    setIsLoading(true)
+
+    try {
+      await axiosPrivate.post("/vendor/product", formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Product created")
+      reset()
+      setImages([])
+    } catch (error) {
+      console.log(error);
+      let message;
+      if (error instanceof AxiosError) {
+        message = handleApiError(error);
+      } else {
+        message = "An unexpected error occurred when creating the product";
+      }
+      toast.error(message);
+    }finally {
+      setIsLoading(false)
+    }
   };
 
   return (
@@ -271,7 +302,7 @@ const CreateProduct = () => {
                 ))}
             </div>
           </div>
-          <Button type="submit" className="bg-black">
+          <Button disabled={isLoading} type="submit" className={`${isLoading && "bg-gray-300 text-black hover:bg-0 cursor-not-allowed"}`}>
             Create Product
           </Button>
         </form>
