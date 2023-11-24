@@ -42,7 +42,8 @@ export const GetCategoryById = asyncHandler(
 
 export const UpdateCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { name } = req.body;
+    try {
+      const { name } = req.body;
 
     const image = req.file;
     const uploadImage = `${BACKEND_URL}/${image?.filename}`;
@@ -58,6 +59,11 @@ export const UpdateCategory = asyncHandler(
     if (!category) return next(createError("No category available"));
 
     res.status(200).json(category);
+    } catch (error: any) {
+      console.log(error.message);
+      res.status(500).json(error.message)
+      
+    }
   }
 );
 
