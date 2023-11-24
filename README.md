@@ -21,5 +21,5 @@
 Git
 
 ##### Deployment
-Frontend: Netlify
-Backend: Render
+-> Frontend: Netlify
+-> Backend: Render
