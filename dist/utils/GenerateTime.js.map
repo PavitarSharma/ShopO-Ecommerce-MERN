@@ -1,0 +1,1 @@
+{"version":3,"file":"GenerateTime.js","sourceRoot":"","sources":["../../src/utils/GenerateTime.ts"],"names":[],"mappings":";;;AAAO,MAAM,eAAe,GAAG,CAAC,MAAc,EAAQ,EAAE;IACtD,MAAM,WAAW,GAAG,IAAI,IAAI,EAAE,CAAC;IAC/B,OAAO,IAAI,IAAI,CAAC,WAAW,CAAC,OAAO,EAAE,GAAG,MAAM,GAAG,EAAE,GAAG,IAAI,CAAC,CAAC;AAC9D,CAAC,CAAC;AAHW,QAAA,eAAe,mBAG1B"}

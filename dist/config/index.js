@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PORT = exports.SMPT_SERVICE = exports.SMPT_PORT = exports.SMPT_HOST = exports.SMPT_PASSWORD = exports.SMPT_MAIL = exports.JWT_EXPIRES = exports.EMAIL_TOKEN_SECRET = exports.ACTIVATION_SECRET = exports.REFRESH_TOKEN_SECRET = exports.REFRESH_TOKEN_EXIRES = exports.ACCESS_TOKEN_EXIRES = exports.ACCESS_TOKEN_SECRET = exports.CLIENT_URL = exports.NODE_ENV = exports.MONGO_URI = void 0;
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+exports.MONGO_URI = process.env.MONGO_URI;
+exports.NODE_ENV = process.env.NODE_ENV;
+exports.CLIENT_URL = process.env.CLIENT_URL;
+exports.ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+exports.ACCESS_TOKEN_EXIRES = process.env.ACCESS_TOKEN_EXIRES;
+exports.REFRESH_TOKEN_EXIRES = process.env.REFRESH_TOKEN_EXIRES;
+exports.REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+exports.ACTIVATION_SECRET = process.env.ACTIVATION_SECRET;
+exports.EMAIL_TOKEN_SECRET = process.env.EMAIL_TOKEN_SECRET;
+exports.JWT_EXPIRES = process.env.JWT_EXPIRES;
+exports.SMPT_MAIL = process.env.SMPT_MAIL;
+exports.SMPT_PASSWORD = process.env.SMPT_PASSWORD;
+exports.SMPT_HOST = process.env.SMPT_HOST;
+exports.SMPT_PORT = process.env.SMPT_PORT;
+exports.SMPT_SERVICE = process.env.SMPT_SERVICE;
+exports.PORT = process.env.PORT || 8000;
+//# sourceMappingURL=index.js.map
