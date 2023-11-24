@@ -26,6 +26,7 @@ export default async (app: Application) => {
     cors({
       origin: [
         "http://localhost:3000",
+        "https://shopo-ecommerce.onrender.com",
         "https://shopo-ecommerce.netlify.app",
         "*",
       ],

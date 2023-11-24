@@ -24,6 +24,7 @@ exports.default = (app) => __awaiter(void 0, void 0, void 0, function* () {
     app.use((0, cors_1.default)({
         origin: [
             "http://localhost:3000",
+            "https://shopo-ecommerce.onrender.com",
             "https://shopo-ecommerce.netlify.app",
             "*",
         ],
