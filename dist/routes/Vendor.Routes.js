@@ -17,4 +17,6 @@ router.get("/", (req, res) => {
 });
 router.use(middlewares_1.Authenticate);
 router.get("/profile", controllers_1.getVendorProfile);
+router.post("/product", middlewares_1.upload.array("images", 10), controllers_1.AddProduct);
+router.get("/products", controllers_1.getVendorProducts);
 //# sourceMappingURL=Vendor.Routes.js.map

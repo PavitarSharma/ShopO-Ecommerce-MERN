@@ -76,8 +76,9 @@ const productSchema = new mongoose_1.Schema({
     ratings: {
         type: Number,
     },
-    vendorId: {
-        type: String,
+    vendor: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Vendor",
         required: true,
     },
     shop: {

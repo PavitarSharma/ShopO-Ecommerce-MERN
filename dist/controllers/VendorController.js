@@ -12,55 +12,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getVendorProfile = void 0;
+exports.getVendorProducts = exports.AddProduct = exports.getVendorProfile = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const http_errors_1 = __importDefault(require("http-errors"));
+const models_1 = require("../models");
 const services_1 = require("../services");
+const config_1 = require("../config");
 exports.getVendorProfile = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const vendor = yield (0, services_1.findVendor)((_a = req.user) === null || _a === void 0 ? void 0 : _a._id);
+    const vendor = yield models_1.Vendor.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id).populate("products");
     if (!vendor)
         next((0, http_errors_1.default)(404, "Customer not found."));
     res.status(200).json(vendor);
 }));
-// export const AddProduct = asyncHandler(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const user = req.user;
-//     const {
-//       name,
-//       description,
-//       category,
-//       tags,
-//       originalPrice,
-//       discountPrice,
-//       stock,
-//     } = <CreateProductInput>req.body;
-//     const vendor = await vendorService.findVendor(user?._id);
-//     if (vendor !== null) {
-//       const files = req.files as [Express.Multer.File];
-//       const images = files.map((file: Express.Multer.File) => file.filename);
-//       const product = await Product.create({
-//         name,
-//         description,
-//         category,
-//         originalPrice: +originalPrice,
-//         discountPrice: +discountPrice,
-//         stock: +stock,
-//         tags,
-//         images,
-//         vendorId: vendor._id,
-//         shop: {
-//           name: vendor.name,
-//           ownerName: vendor.ownerName,
-//           coverImage: vendor.coverImage,
-//           address: vendor.address,
-//           rating: vendor.rating,
-//         },
-//       });
-//       vendor.products.push(product);
-//       const result = await vendor.save();
-//       res.status(201).json(result);
-//     }
-//   }
-// );
+exports.AddProduct = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const { name, description, category, tags, originalPrice, discountPrice, stock, } = req.body;
+    const vendor = yield (0, services_1.findVendor)((_b = req.user) === null || _b === void 0 ? void 0 : _b._id);
+    if (vendor !== null) {
+        const files = req.files;
+        const images = files.map((file) => `${config_1.BACKEND_URL}/${file.filename}`);
+        const product = yield models_1.Product.create({
+            name,
+            description,
+            category,
+            originalPrice: +originalPrice,
+            discountPrice: +discountPrice,
+            stock: +stock,
+            tags,
+            images,
+            vendor: vendor._id,
+            shop: {
+                name: vendor.name,
+                ownerName: vendor.ownerName,
+                coverImage: vendor.coverImage,
+                address: vendor.address,
+                rating: vendor.rating,
+            },
+        });
+        vendor.products.push(product);
+        const result = yield vendor.save();
+        res.status(201).json(result);
+    }
+}));
+exports.getVendorProducts = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    const products = yield models_1.Product.find({ vendor: (_c = req.user) === null || _c === void 0 ? void 0 : _c._id }).populate({
+        path: "vendor",
+        select: "_id name email coverImage phone address",
+    });
+    if (products.length === 0)
+        return next((0, http_errors_1.default)("No product found with this vendor"));
+    res.status(200).json(products);
+}));
 //# sourceMappingURL=VendorController.js.map

@@ -11,7 +11,7 @@ interface ProductDoc extends Document {
   stock: number;
   images: [string];
   ratings?: number;
-  vendorId: string;
+  vendor: string | Schema.Types.ObjectId;
   reviews: {
     user: UserDoc;
     rating: number;
@@ -75,8 +75,9 @@ const productSchema = new Schema<ProductDoc>({
   ratings: {
     type: Number,
   },
-  vendorId: {
-    type: String,
+  vendor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Vendor",
     required: true,
   },
   shop: {

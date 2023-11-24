@@ -48,6 +48,7 @@ exports.default = (app) => __awaiter(void 0, void 0, void 0, function* () {
     app.use("/vendor", routes_1.VendorRoutes);
     app.use("/category", routes_1.categoryRoutes);
     app.use("/banner", routes_1.bannerRoutes);
+    app.use("/products", routes_1.ProductRoutes);
     app.use("*", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         next(http_errors_1.default.NotFound());
     }));

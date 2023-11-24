@@ -13,6 +13,7 @@ import path from "path";
 import {
   AdminRoutes,
   AuthRoutes,
+  ProductRoutes,
   UserRoutes,
   VendorRoutes,
   bannerRoutes,
@@ -53,6 +54,7 @@ export default async (app: Application) => {
   app.use("/vendor", VendorRoutes);
   app.use("/category", categoryRoutes);
   app.use("/banner", bannerRoutes);
+  app.use("/products", ProductRoutes);
 
   app.use("*", async (req: Request, res: Response, next: NextFunction) => {
     next(createHttpError.NotFound());
