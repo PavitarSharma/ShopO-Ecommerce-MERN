@@ -16,6 +16,7 @@ exports.DeleteCategory = exports.UpdateCategory = exports.GetCategoryById = expo
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const models_1 = require("../models");
+const config_1 = require("../config");
 exports.CreateCategory = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
     const image = req.file;
@@ -40,10 +41,12 @@ exports.GetCategoryById = (0, express_async_handler_1.default)((req, res, next) 
 exports.UpdateCategory = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
     const image = req.file;
+    const uploadImage = `${config_1.BACKEND_URL}/${image === null || image === void 0 ? void 0 : image.filename}`;
     const category = yield models_1.Category.findByIdAndUpdate(req.params.id, {
         name,
-        image,
+        image: uploadImage,
     }, { new: true });
+    //https://shopo-ecommerce.onrender.com
     if (!category)
         return next((0, http_errors_1.default)("No category available"));
     res.status(200).json(category);

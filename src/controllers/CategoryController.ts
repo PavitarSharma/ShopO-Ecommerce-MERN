@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import createError from "http-errors";
 import { Category } from "../models";
+import { BACKEND_URL } from "../config";
 
 export const CreateCategory = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -44,15 +45,16 @@ export const UpdateCategory = asyncHandler(
     const { name } = req.body;
 
     const image = req.file;
+    const uploadImage = `${BACKEND_URL}/${image?.filename}`;
     const category = await Category.findByIdAndUpdate(
       req.params.id,
       {
         name,
-        image,
+        image: uploadImage,
       },
       { new: true }
     );
-
+    //https://shopo-ecommerce.onrender.com
     if (!category) return next(createError("No category available"));
 
     res.status(200).json(category);

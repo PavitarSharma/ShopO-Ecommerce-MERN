@@ -30,7 +30,7 @@ exports.default = (app) => __awaiter(void 0, void 0, void 0, function* () {
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         credentials: true,
     }));
-    app.use("/", express_1.default.static(path_1.default.join(__dirname, "../uploads")));
+    app.use("/", express_1.default.static(path_1.default.join(__dirname, "../../uploads")));
     app.use(express_1.default.json());
     app.use(express_1.default.urlencoded({ extended: true }));
     app.use((0, cookie_parser_1.default)());
