@@ -1,0 +1,13 @@
+export { default as VendorLayout } from "./VendorLayout";
+export { default as Dashboard } from "./Dashboard";
+export { default as Orders } from "./Orders";
+export { default as VendorProducts } from "./Products";
+export { default as CreateProducts } from "./CreateProduct";
+export { default as VendorEvents } from "./Events";
+export { default as CreateEvent } from "./CreateEvent";
+export { default as WithdrawMoney } from "./WithdrawMoney";
+export { default as Messages } from "./Messages";
+export { default as Coupons } from "./Coupons";
+export { default as Refunds } from "./Refunds";
+export { default as Settings } from "./Settings";
+export { default as VendorProfile } from "./VendorProfile";
