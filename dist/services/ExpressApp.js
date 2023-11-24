@@ -22,7 +22,11 @@ const routes_1 = require("../routes");
 const http_errors_1 = __importDefault(require("http-errors"));
 exports.default = (app) => __awaiter(void 0, void 0, void 0, function* () {
     app.use((0, cors_1.default)({
-        origin: ["http://localhost:3000", "*"],
+        origin: [
+            "http://localhost:3000",
+            "https://shopo-ecommerce.netlify.app",
+            "*",
+        ],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         credentials: true,
     }));

@@ -23,7 +23,11 @@ import createHttpError from "http-errors";
 export default async (app: Application) => {
   app.use(
     cors({
-      origin: ["http://localhost:3000", "*"],
+      origin: [
+        "http://localhost:3000",
+        "https://shopo-ecommerce.netlify.app",
+        "*",
+      ],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
     })
