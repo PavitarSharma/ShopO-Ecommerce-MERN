@@ -3,11 +3,9 @@ import Container from "@/components/Layout/Container";
 import EventCard from "@/components/Layout/EventCard";
 import ProductCard from "@/components/Layout/ProductCard";
 import Title from "@/components/Layout/Title";
-
 import Banner from "@/components/Root/Banner";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useCategories from "@/hooks/useCategories";
-import { BACKEND_URL } from "@/http";
 import { brandingData, sponseredData } from "@/utils/data";
 import { Category } from "@/utils/types";
 import { useNavigate } from "react-router-dom";
@@ -72,7 +70,7 @@ const Home = () => {
                         onClick={() =>
                           navigate(`/products?category=${productItem}`)
                         }
-                        src={`${BACKEND_URL}/${item?.image}`}
+                        src={`${item?.image}`}
                         alt={item?.name}
                         width={80}
                         height={80}

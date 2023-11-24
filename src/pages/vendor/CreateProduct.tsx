@@ -26,6 +26,7 @@ const CreateProduct = () => {
   const { data: categorires } = useCategories();
   const [images, setImages] = useState<File[]>([]);
 
+
   const {
     register,
     handleSubmit,
