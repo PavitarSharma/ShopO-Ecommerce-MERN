@@ -21,5 +21,5 @@
 Git
 
 ##### Deployment
--> Frontend: Netlify
--> Backend: Render
+1. Frontend: Netlify
+2. Backend: Render
