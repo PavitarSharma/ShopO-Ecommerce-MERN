@@ -1,3 +1,6 @@
+import dontenv from "dotenv";
+dontenv.config();
+
 import { v2 as cloudinary } from "cloudinary";
 import {
   CLOUNINARY_API_KEY,
