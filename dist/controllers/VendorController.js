@@ -17,7 +17,7 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 const http_errors_1 = __importDefault(require("http-errors"));
 const models_1 = require("../models");
 const services_1 = require("../services");
-const config_1 = require("../config");
+const Cloudinary_1 = require("../utils/Cloudinary");
 exports.getVendorProfile = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const vendor = yield models_1.Vendor.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id).populate("products");
@@ -27,11 +27,12 @@ exports.getVendorProfile = (0, express_async_handler_1.default)((req, res, next)
 }));
 exports.AddProduct = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const { name, description, category, tags, originalPrice, discountPrice, stock, } = req.body;
+    const { name, description, category, tags, originalPrice, discountPrice, stock, brand, } = req.body;
     const vendor = yield (0, services_1.findVendor)((_b = req.user) === null || _b === void 0 ? void 0 : _b._id);
     if (vendor !== null) {
         const files = req.files;
-        const images = files.map((file) => `${config_1.BACKEND_URL}/${file.filename}`);
+        const uploadedImages = yield (0, Cloudinary_1.uploadImagesToCloudinary)(files);
+        res.json(uploadedImages);
         const product = yield models_1.Product.create({
             name,
             description,
@@ -40,7 +41,7 @@ exports.AddProduct = (0, express_async_handler_1.default)((req, res, next) => __
             discountPrice: +discountPrice,
             stock: +stock,
             tags,
-            images,
+            images: uploadedImages,
             vendor: vendor._id,
             shop: {
                 name: vendor.name,
@@ -49,6 +50,7 @@ exports.AddProduct = (0, express_async_handler_1.default)((req, res, next) => __
                 address: vendor.address,
                 rating: vendor.rating,
             },
+            brand
         });
         vendor.products.push(product);
         const result = yield vendor.save();

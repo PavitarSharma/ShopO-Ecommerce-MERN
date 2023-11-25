@@ -52,7 +52,8 @@ const productSchema = new mongoose_1.Schema({
         type: Number,
         required: [true, "Please enter your product stock!"],
     },
-    images: [{ type: String }],
+    brand: String,
+    images: [{ id: String, url: String }],
     reviews: [
         {
             user: {
@@ -92,6 +93,12 @@ const productSchema = new mongoose_1.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+    },
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            delete ret.__v;
+        },
     },
 });
 exports.Product = mongoose_1.default.model("Product", productSchema);

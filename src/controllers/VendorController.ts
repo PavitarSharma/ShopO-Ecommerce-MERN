@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import createError from "http-errors";
-
 import { CreateProductInput } from "../dto";
 import { Product, Vendor } from "../models";
 import { findVendor } from "../services";
-import { BACKEND_URL } from "../config";
+import { uploadImagesToCloudinary } from "../utils/Cloudinary";
 
 export const getVendorProfile = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -27,14 +26,16 @@ export const AddProduct = asyncHandler(
       originalPrice,
       discountPrice,
       stock,
+      brand,
     } = <CreateProductInput>req.body;
     const vendor = await findVendor(req.user?._id);
 
     if (vendor !== null) {
       const files = req.files as [Express.Multer.File];
-      const images = files.map(
-        (file: Express.Multer.File) => `${BACKEND_URL}/${file.filename}`
-      );
+
+      const uploadedImages = await uploadImagesToCloudinary(files);
+
+      res.json(uploadedImages);
 
       const product = await Product.create({
         name,
@@ -44,7 +45,7 @@ export const AddProduct = asyncHandler(
         discountPrice: +discountPrice,
         stock: +stock,
         tags,
-        images,
+        images: uploadedImages,
         vendor: vendor._id,
         shop: {
           name: vendor.name,
@@ -53,6 +54,7 @@ export const AddProduct = asyncHandler(
           address: vendor.address,
           rating: vendor.rating,
         },
+        brand
       });
       vendor.products.push(product);
 

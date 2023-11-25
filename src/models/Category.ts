@@ -2,13 +2,16 @@ import { Schema, model, Document } from "mongoose";
 
 export interface ICategoryDoc extends Document {
   name: string;
-  image?: string;
+  image: {
+    id: string;
+    url: string;
+  };
 }
 
 const categorySchema = new Schema(
   {
     name: { type: String, required: true },
-    image: { type: String },
+    image: { id: String, url: String },
   },
   {
     toJSON: {

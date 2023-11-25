@@ -34,3 +34,9 @@ export const SMPT_PORT = process.env.SMPT_PORT as string;
 export const SMPT_SERVICE = process.env.SMPT_SERVICE as string;
 
 export const PORT = process.env.PORT || 8000;
+
+export const CLOUNINARY_COULD_NAME = process.env.CLOUNINARY_COULD_NAME as string
+
+export const CLOUNINARY_API_KEY = process.env.CLOUNINARY_API_KEY as string
+
+export const CLOUNINARY_API_SECRET = process.env.CLOUNINARY_API_SECRET as string

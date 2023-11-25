@@ -16,13 +16,14 @@ exports.DeleteCategory = exports.UpdateCategory = exports.GetCategoryById = expo
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const models_1 = require("../models");
-const config_1 = require("../config");
+const utils_1 = require("../utils");
 exports.CreateCategory = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
     const image = req.file;
+    const uploadImage = yield (0, utils_1.uploadImageToCloudinary)(image);
     const category = yield models_1.Category.create({
         name,
-        image: image ? image.filename : "",
+        image: uploadImage,
     });
     res.status(201).json(category);
 }));
@@ -39,17 +40,23 @@ exports.GetCategoryById = (0, express_async_handler_1.default)((req, res, next) 
     res.status(200).json(category);
 }));
 exports.UpdateCategory = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name } = req.body;
-    const image = req.file;
-    const uploadImage = `${config_1.BACKEND_URL}/${image === null || image === void 0 ? void 0 : image.filename}`;
-    const category = yield models_1.Category.findByIdAndUpdate(req.params.id, {
-        name,
-        image: uploadImage,
-    }, { new: true });
-    //https://shopo-ecommerce.onrender.com
-    if (!category)
-        return next((0, http_errors_1.default)("No category available"));
-    res.status(200).json(category);
+    try {
+        const { name } = req.body;
+        const image = req.file;
+        const uploadImage = yield (0, utils_1.uploadImageToCloudinary)(image);
+        const category = yield models_1.Category.findByIdAndUpdate(req.params.id, {
+            name,
+            image: uploadImage,
+        }, { new: true });
+        //https://shopo-ecommerce.onrender.com
+        if (!category)
+            return next((0, http_errors_1.default)("No category available"));
+        res.status(200).json(category);
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).json(error.message);
+    }
 }));
 exports.DeleteCategory = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const category = yield models_1.Category.findByIdAndRemove(req.params.id);

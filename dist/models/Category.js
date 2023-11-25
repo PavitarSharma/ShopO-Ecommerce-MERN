@@ -4,7 +4,7 @@ exports.Category = void 0;
 const mongoose_1 = require("mongoose");
 const categorySchema = new mongoose_1.Schema({
     name: { type: String, required: true },
-    image: { type: String },
+    image: { id: String, url: String },
 }, {
     toJSON: {
         transform(doc, ret) {

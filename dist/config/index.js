@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PORT = exports.SMPT_SERVICE = exports.SMPT_PORT = exports.SMPT_HOST = exports.SMPT_PASSWORD = exports.SMPT_MAIL = exports.JWT_EXPIRES = exports.EMAIL_TOKEN_SECRET = exports.ACTIVATION_SECRET = exports.REFRESH_TOKEN_SECRET = exports.REFRESH_TOKEN_EXIRES = exports.ACCESS_TOKEN_EXIRES = exports.ACCESS_TOKEN_SECRET = exports.BACKEND_URL = exports.CLIENT_URL = exports.NODE_ENV = exports.MONGO_URI = void 0;
+exports.CLOUNINARY_API_SECRET = exports.CLOUNINARY_API_KEY = exports.CLOUNINARY_COULD_NAME = exports.PORT = exports.SMPT_SERVICE = exports.SMPT_PORT = exports.SMPT_HOST = exports.SMPT_PASSWORD = exports.SMPT_MAIL = exports.JWT_EXPIRES = exports.EMAIL_TOKEN_SECRET = exports.ACTIVATION_SECRET = exports.REFRESH_TOKEN_SECRET = exports.REFRESH_TOKEN_EXIRES = exports.ACCESS_TOKEN_EXIRES = exports.ACCESS_TOKEN_SECRET = exports.BACKEND_URL = exports.CLIENT_URL = exports.NODE_ENV = exports.MONGO_URI = void 0;
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 exports.MONGO_URI = process.env.MONGO_URI;
@@ -20,4 +20,7 @@ exports.SMPT_HOST = process.env.SMPT_HOST;
 exports.SMPT_PORT = process.env.SMPT_PORT;
 exports.SMPT_SERVICE = process.env.SMPT_SERVICE;
 exports.PORT = process.env.PORT || 8000;
+exports.CLOUNINARY_COULD_NAME = process.env.CLOUNINARY_COULD_NAME;
+exports.CLOUNINARY_API_KEY = process.env.CLOUNINARY_API_KEY;
+exports.CLOUNINARY_API_SECRET = process.env.CLOUNINARY_API_SECRET;
 //# sourceMappingURL=index.js.map

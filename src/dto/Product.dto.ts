@@ -6,4 +6,5 @@ export interface CreateProductInput {
   discountPrice: string;
   tags: string;
   stock: string;
+  brand: string
 }
