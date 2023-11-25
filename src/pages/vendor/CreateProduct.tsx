@@ -25,6 +25,7 @@ interface IFormInput {
   originalPrice?: string;
   discountPrice: string;
   stock: string;
+  brand: string
 }
 const CreateProduct = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -75,6 +76,7 @@ const CreateProduct = () => {
       originalPrice,
       discountPrice,
       stock,
+      brand
     } = data;
 
     const formdata = new FormData();
@@ -85,6 +87,7 @@ const CreateProduct = () => {
     formdata.append("discountPrice", String(discountPrice));
     formdata.append("stock", stock);
     formdata.append("tags", String(tags));
+    formdata.append("brand", brand)
 
     images.map((file) => {
       formdata.append("images", file);
@@ -185,6 +188,24 @@ const CreateProduct = () => {
             />
             <span className="text-red-600 text-sm ml-2 mt-[1px]">
               {errors?.category?.message}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="name">
+              Brand Name <span className="text-red-600">{"*"}</span>
+            </label>
+            <input
+              type="text"
+              {...register("brand", {
+                required: "Please enter the product brand",
+              })}
+              className="w-full border border-gray-300 rounded py-2 px-4  focus:outline-blue-600"
+              placeholder="Enter your product brand name"
+            />
+
+            <span className="text-red-600 text-sm ml-2 mt-[1px]">
+              {errors?.name?.message}
             </span>
           </div>
 

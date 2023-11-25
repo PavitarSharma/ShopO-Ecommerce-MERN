@@ -133,9 +133,9 @@ const VendorSidebar = () => {
       <div className="w-full h-[1px] bg-gray-200 mt-4" />
       <div
         onClick={handleLogout}
-        className="flex items-center gap-2 md:border border-gray-300 rounded-md mt-4 h-10 justify-center cursor-pointer"
+        className="flex items-center gap-2 md:border  border-gray-300 rounded-md mt-4 h-10 justify-center cursor-pointer"
       >
-        <AiOutlineLogout className="md:text-xl text-3xl" />
+        <AiOutlineLogout  />
         <span className="md:block hidden">Log out</span>
       </div>
     </div>

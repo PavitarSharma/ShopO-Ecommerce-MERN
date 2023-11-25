@@ -4,17 +4,19 @@ import EventCard from "@/components/Layout/EventCard";
 import ProductCard from "@/components/Layout/ProductCard";
 import Title from "@/components/Layout/Title";
 import Banner from "@/components/Root/Banner";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import useProducts from "@/hooks/product/useProducts";
 import useCategories from "@/hooks/useCategories";
 import { brandingData, sponseredData } from "@/utils/data";
-import { Category } from "@/utils/types";
+import { Category, Product } from "@/utils/types";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 
 const Home = () => {
   const navigate = useNavigate();
   const { data: categories } = useCategories();
-  useAxiosPrivate();
+  const { data: products, isLoading } = useProducts();
+
   const settings = {
     dots: false,
     infinite: true,
@@ -26,8 +28,13 @@ const Home = () => {
     initialSlide: 0,
     adaptiveHeight: true,
   };
+
   return (
     <>
+      <Helmet>
+        <title>Shopo Ecommerce - Home</title>
+      </Helmet>
+      
       <Banner />
       <Container>
         {/* Brand */}
@@ -70,7 +77,7 @@ const Home = () => {
                         onClick={() =>
                           navigate(`/products?category=${productItem}`)
                         }
-                        src={`${item?.image}`}
+                        src={`${item?.image?.url}`}
                         alt={item?.name}
                         width={80}
                         height={80}
@@ -89,12 +96,20 @@ const Home = () => {
         <div className="my-12">
           <Title title="Best Deals" />
 
-          <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[540px]:grid-cols-2 grid-cols-1 mt-4 gap-6">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+          <div className="lg:w-[calc(100% - 350px)] lg:ml-auto w-full mx-auto">
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[540px]:grid-cols-2 grid-cols-1 mt-4 gap-6">
+                {products?.length > 0
+                  ? products
+                      ?.slice(0, 5)
+                      ?.map((product: Product) => (
+                        <ProductCard key={product?._id} product={product} />
+                      ))
+                  : "No product found"}
+              </div>
+            )}
           </div>
         </div>
 
@@ -108,17 +123,20 @@ const Home = () => {
         <div className="my-12">
           <Title title="Featured Products" />
 
-          <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[540px]:grid-cols-2 grid-cols-1 mt-4 gap-6">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+          <div className="lg:w-[calc(100% - 350px)] lg:ml-auto w-full mx-auto">
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 min-[540px]:grid-cols-2 grid-cols-1 mt-4 gap-6">
+                {products?.length > 0
+                  ? products
+                      ?.slice(0, 5)
+                      ?.map((product: Product) => (
+                        <ProductCard key={product?._id} product={product} />
+                      ))
+                  : "No product found"}
+              </div>
+            )}
           </div>
         </div>
 

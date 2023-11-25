@@ -20,6 +20,7 @@ import {
   Coupons,
   CreateEvent,
   Dashboard,
+  EditShop,
   Messages,
   Orders,
   Refunds,
@@ -33,7 +34,6 @@ import {
 import CreateProduct from "./pages/vendor/CreateProduct";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
-
 
 const App = () => {
   return (
@@ -74,6 +74,7 @@ const App = () => {
               <Route path="settings" element={<Settings />} />
             </Route>
             <Route path="/vendor/profile" element={<VendorProfile />} />
+            <Route path="/vendor/edit" element={<EditShop />} />
           </Route>
         </Route>
       </Routes>

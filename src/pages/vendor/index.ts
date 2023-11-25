@@ -11,3 +11,4 @@ export { default as Coupons } from "./Coupons";
 export { default as Refunds } from "./Refunds";
 export { default as Settings } from "./Settings";
 export { default as VendorProfile } from "./VendorProfile";
+export { default as EditShop } from "./EditShop";

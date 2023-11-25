@@ -37,6 +37,7 @@ const links = [
 
 const VendorHeader = () => {
   const { data: vendor } = useVendorProfile();
+
   return (
     <div className="w-full h-20 bg-white sticky top-0 z-[500] left-0 shadow flex items-center justify-between px-4">
       <Logo path="/vendor" />

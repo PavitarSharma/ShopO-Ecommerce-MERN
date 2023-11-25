@@ -1,4 +1,8 @@
 import useProductViewModal from "@/hooks/useProductViewModal";
+import { useAppDispatch } from "@/redux/hooks";
+import { getProduct } from "@/redux/slices/productSlice";
+import { currencyFormat } from "@/utils/CurrencyFormat";
+import { Product } from "@/utils/types";
 import { useCallback, useState } from "react";
 
 import {
@@ -11,20 +15,28 @@ import {
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
-const ProductCard = () => {
+interface ProductProp {
+  product: Product | null;
+}
+
+const ProductCard = ({ product }: ProductProp) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const productViewModal = useProductViewModal();
+  const dispatch = useAppDispatch();
 
   const onToggle = useCallback(() => {
     productViewModal.onOpen();
-  }, [productViewModal]);
+    if (product) {
+      dispatch(getProduct(product));
+    }
+  }, [productViewModal, dispatch, product]);
 
   const toggleIsFavorite = useCallback(() => {
     setIsFavorite((prevState) => !prevState);
   }, []);
 
- 
-  const name = "Iphone 14 pro max 256 gb ssd and 8 gb ram silver colour";
+
+  const name = product?.name;
   return (
     <>
       <div className="relative bg-white shadow p-2 rounded-lg">
@@ -45,17 +57,17 @@ const ProductCard = () => {
         </div>
         <Link to={`/products/abc`}>
           <img
-            src="/images/mobile.jpg"
-            alt="product"
+            src={product?.images[0]?.url}
+            alt={product?.name}
             loading="lazy"
             className="w-full h-[170px] object-contain"
           />
         </Link>
 
         <div>
-          <p className="text-blue-600">Apple inc.</p>
+          <p className="text-blue-600 capitalize mt-2">{product?.brand}</p>
           <h5 className="font-semibold my-2 md:text-xl text-lg">
-            {name?.length > 40 ? name?.slice(0, 40) + "..." : name}
+            {name && name?.length > 40 ? name?.slice(0, 40) + "..." : name}
           </h5>
 
           <div className="flex items-center">
@@ -74,11 +86,17 @@ const ProductCard = () => {
                   : product?.discount_price}
                 $
               </h5> */}
-              <h5 className="font-semibold">1049$</h5>
-              <del className="text-red-600 text-xs -mt-2 ml-1">1099</del>
+              <h5 className="font-semibold">
+                {currencyFormat(product?.originalPrice as number)}
+              </h5>
+              <del className="text-red-600 text-xs -mt-2 ml-1">
+                {currencyFormat(product?.discountPrice as number)}
+              </del>
             </div>
 
-            <p className="text-green-600 font-medium">35 Sold</p>
+            <p className="text-green-600 font-medium">
+              {product?.sold_out} Sold
+            </p>
           </div>
         </div>
       </div>

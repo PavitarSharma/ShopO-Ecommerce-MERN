@@ -6,6 +6,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 import Search from "@/components/Layout/Search";
 import { MdGridView, MdList } from "react-icons/md";
 import ProductListView from "@/components/Layout/Product/ProductListView";
+import useVendorProfile from "@/hooks/vendor/useVendorProfile";
+import { Product } from "@/utils/types";
 
 const ShopProfile = ({ toggleShopInfo }: { toggleShopInfo: () => void }) => {
   const navigate = useNavigate();
@@ -65,6 +67,7 @@ const ShopProfile = ({ toggleShopInfo }: { toggleShopInfo: () => void }) => {
 export default ShopProfile;
 
 const ShopProducts = () => {
+  const { data: vendor } = useVendorProfile();
   const [searchTerm, setSearchTerm] = useState("");
   const [productView, setProductView] = useState("Grid");
 
@@ -100,21 +103,21 @@ const ShopProducts = () => {
       </div>
       {productView === "Grid" && (
         <div className="grid xl:grid-cols-3 sm:grid-cols-2   grid-cols-1 gap-6 mt-6">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {vendor?.products?.length > 0
+            ? vendor?.products?.map((product: Product) => (
+                <ProductCard key={product?._id} product={product} />
+              ))
+            : "No product"}
         </div>
       )}
 
       {productView === "List" && (
         <div className="my-6 flex flex-col gap-6">
-          <ProductListView />
-          <ProductListView />
-          <ProductListView />
-          <ProductListView />
-          <ProductListView />
+          {vendor?.products?.length > 0
+            ? vendor?.products?.map((product: Product) => (
+                <ProductListView key={product?._id} product={product} />
+              ))
+            : "No product"}
         </div>
       )}
     </>

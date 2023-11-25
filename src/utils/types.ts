@@ -1,7 +1,10 @@
 export type Category = {
   _id: string;
   name: string;
-  image: string;
+  image: {
+    id: string;
+    url: string;
+  };
 };
 
 export interface IAddress {
@@ -21,7 +24,7 @@ export interface IUser {
   role: string;
   verified: boolean;
   avatar?: string;
-  phone?: number ;
+  phone?: number;
   addresses: IAddress[];
   createdAt: Date;
   updatedAt: Date;
@@ -46,4 +49,29 @@ export interface IVendor {
   createdAt: string | Date;
   updatedAt: string | Date;
   description: string;
+}
+
+export interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  category: string;
+  tags: string;
+  originalPrice: number;
+  discountPrice: number;
+  stock: number;
+  images: [{ id: string; url: string }];
+  vendor: string;
+  shop: {
+    name: string;
+    ownerName: string;
+    coverImage: string;
+    address: string;
+    rating: number;
+  };
+  brand: string;
+  sold_out: number;
+  reviews: number[];
+  createdAt: string;
+  __v?: number;
 }
