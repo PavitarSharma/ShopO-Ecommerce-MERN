@@ -18,8 +18,6 @@ export interface VendorLoginInput {
 export interface VendorPayload {
   _id: string;
   email: string;
-  name: string;
-  ownerName: string;
   role: string;
 }
 

@@ -105,13 +105,13 @@ export const generateRefreshToken = asyncHandler(
       _id: foundUser._id,
       email: foundUser.email,
       role: foundUser.role,
-      verified: foundUser.verified,
     });
 
     const { access_token } = signature;
 
     res.status(200).json({
       accessToken: access_token,
+      user: foundUser
     });
   }
 );

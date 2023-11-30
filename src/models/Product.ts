@@ -23,6 +23,7 @@ interface ProductDoc extends Document {
   sold_out: number;
   createdAt: Date;
   brand: string;
+  isFavorite: boolean;
 }
 
 const productSchema = new Schema<ProductDoc>(
@@ -83,6 +84,12 @@ const productSchema = new Schema<ProductDoc>(
       ref: "Vendor",
       required: true,
     },
+
+    isFavorite: {
+      type: Boolean,
+      default: false,
+    },
+
     shop: {
       type: Object,
       required: true,

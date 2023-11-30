@@ -26,6 +26,8 @@ export interface UserDoc extends Document {
   otp_expiry: Date;
   lat: number;
   lng: number;
+  wishlists: any[];
+  cart: any[];
 }
 
 const userSchema = new Schema(
@@ -92,8 +94,23 @@ const userSchema = new Schema(
     },
     verified: {
       type: Boolean,
-      default: false
+      default: false,
     },
+    wishlists: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    cart: [
+      {
+        product: {
+          type: mongoose.SchemaTypes.ObjectId,
+          ref: "Product",
+        },
+        unit: { type: Number },
+      },
+    ],
 
     avatar: String,
 
@@ -105,10 +122,10 @@ const userSchema = new Schema(
       transform(doc, ret) {
         delete ret.password;
         delete ret.__v;
-        delete ret.otp_expiry
-        delete ret.otp
-        delete ret.resetPasswordToken
-        delete ret.resetPasswordTime
+        delete ret.otp_expiry;
+        delete ret.otp;
+        delete ret.resetPasswordToken;
+        delete ret.resetPasswordTime;
         // delete ret.createdAt;
         // delete ret.updatedAt;
       },
