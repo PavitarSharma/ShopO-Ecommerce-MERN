@@ -1,8 +1,8 @@
 // import { Store } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// export const BACKEND_URL = "http://localhost:8000";
-export const BACKEND_URL = "https://shopo-ecommerce.onrender.com"
+export const BACKEND_URL = "http://localhost:8000";
+// export const BACKEND_URL = "https://shopo-ecommerce.onrender.com"
 
 export const axiosPublic = axios.create({
   baseURL: BACKEND_URL,

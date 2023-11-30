@@ -8,6 +8,7 @@ import {
 } from "./pages/auth";
 import {
   BestSelling,
+  Cart,
   Events,
   Faq,
   Home,
@@ -54,6 +55,7 @@ const App = () => {
             <Route path="products" element={<Products />} />
             <Route path="events" element={<Events />} />
             <Route path="faqs" element={<Faq />} />
+            <Route path="cart" element={<Cart />} />
             <Route element={<ProtectedRoutes />}>
               <Route path="profile" element={<Profile />} />
             </Route>

@@ -1,9 +1,15 @@
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import useProductViewModal from "@/hooks/useProductViewModal";
-import { useAppDispatch } from "@/redux/hooks";
+import useUserProfile from "@/hooks/useUserProfile";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { SelectAuthState } from "@/redux/slices/authSlice";
 import { getProduct } from "@/redux/slices/productSlice";
 import { currencyFormat } from "@/utils/CurrencyFormat";
+import { handleApiError } from "@/utils/handleApiError";
 import { Product } from "@/utils/types";
+import { AxiosError } from "axios";
 import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
 
 import {
   AiOutlineHeart,
@@ -17,11 +23,15 @@ import { Link } from "react-router-dom";
 
 interface ProductProp {
   product: Product | null;
+  isCart?: boolean;
 }
 
-const ProductListView = ({ product }: ProductProp) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+const ProductListView = ({ product, isCart }: ProductProp) => {
+  const axiosPrivate = useAxiosPrivate();
+  const [isFavorite, setIsFavorite] = useState(product?.isFavorite);
+  const { isAuth } = useAppSelector(SelectAuthState);
   const productViewModal = useProductViewModal();
+  const { mutate } = useUserProfile();
   const dispatch = useAppDispatch();
 
   const onToggle = useCallback(() => {
@@ -30,14 +40,37 @@ const ProductListView = ({ product }: ProductProp) => {
       dispatch(getProduct(product));
     }
   }, [productViewModal, dispatch, product]);
-  const toggleIsFavorite = useCallback(() => {
+
+  const toggleIsFavorite = useCallback(async () => {
+    if (!isAuth) {
+      toast.error("You are not logged in. Please login");
+      return;
+    }
     setIsFavorite((prevState) => !prevState);
-  }, []);
+    try {
+      await axiosPrivate.post("/products/wishlist", {
+        id: product?._id,
+        isFavorite: !isFavorite,
+      });
+      mutate("/user/profile");
+    } catch (error) {
+      console.log(error);
+      let message;
+
+      if (error instanceof AxiosError) {
+        message = handleApiError(error);
+      } else {
+        message = "An unexpected error occurred.";
+      }
+
+      toast.error(message);
+    }
+  }, [isAuth, axiosPrivate, product, isFavorite, mutate]);
 
   const name = product?.name;
   return (
     <>
-      <div className="relative bg-white shadow p-2 rounded-lg sm:flex">
+      <div className={`relative bg-white shadow ${isCart && "border border-gray-300"} p-2 rounded-lg sm:flex`}>
         <div className="absolute right-4 top-4 flex flex-col">
           <button onClick={toggleIsFavorite}>
             {isFavorite ? (
@@ -63,10 +96,14 @@ const ProductListView = ({ product }: ProductProp) => {
         </Link>
 
         <div>
-        <p className="text-blue-600 capitalize">{product?.brand}</p>
+          <p className="text-blue-600 capitalize">{product?.brand}</p>
 
           <h5 className="break-words font-semibold w-80 my-2 md:text-xl text-lg">
-            {name}
+            {isCart
+              ? name && name.length > 30
+                ? name.substring(0, 50) + "..."
+                : name
+              : name}
           </h5>
 
           <div className="flex items-center">

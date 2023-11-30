@@ -1,8 +1,11 @@
+import useCart from "@/hooks/product/useCart";
+import useWishlist from "@/hooks/product/useWishlist";
 import useProductViewModal from "@/hooks/useProductViewModal";
 import { useAppDispatch } from "@/redux/hooks";
 import { getProduct } from "@/redux/slices/productSlice";
 import { currencyFormat } from "@/utils/CurrencyFormat";
 import { Product } from "@/utils/types";
+
 import { useCallback, useState } from "react";
 
 import {
@@ -14,15 +17,31 @@ import {
   AiFillStar,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import AddToCart from "./AddToCart";
+import { Button } from "../ui/button";
 
 interface ProductProp {
   product: Product | null;
 }
 
 const ProductCard = ({ product }: ProductProp) => {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const productViewModal = useProductViewModal();
   const dispatch = useAppDispatch();
+  const [isFavorite, setIsFavorite] = useState<boolean>(
+    product?.isFavorite || false
+  );
+  const productViewModal = useProductViewModal();
+  const { addToCart, count, handleDecrement, handleIncrement } = useCart({
+    product,
+  });
+  const [hover, setHover] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const { toggleIsFavorite } = useWishlist();
+
+  const handleFavorte = async () => {
+    setIsFavorite((prevState) => !prevState);
+    await toggleIsFavorite(isFavorite, product as Product);
+  };
 
   const onToggle = useCallback(() => {
     productViewModal.onOpen();
@@ -31,17 +50,24 @@ const ProductCard = ({ product }: ProductProp) => {
     }
   }, [productViewModal, dispatch, product]);
 
-  const toggleIsFavorite = useCallback(() => {
-    setIsFavorite((prevState) => !prevState);
-  }, []);
+  const handleAddToCart = async () => {
+    if (product) {
+      await addToCart(product?._id, count);
+    }
+  };
 
+  const handleButtonClick = () => {
+    setVisible((prev) => !prev);
+    setHover(false); // Reset hover state when button is clicked
+  };
 
   const name = product?.name;
+
   return (
     <>
       <div className="relative bg-white shadow p-2 rounded-lg">
         <div className="absolute right-1 flex flex-col">
-          <button onClick={toggleIsFavorite}>
+          <button onClick={handleFavorte}>
             {isFavorite ? (
               <AiFillHeart color="red" size={24} title="Favorite" />
             ) : (
@@ -51,18 +77,48 @@ const ProductCard = ({ product }: ProductProp) => {
           <button onClick={onToggle}>
             <AiOutlineEye size={24} title="View" color="#333" />
           </button>
-          <button onClick={() => {}}>
+          <button
+            disabled={product?.stock === 0}
+            onClick={handleButtonClick}
+            onMouseOver={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+          >
             <AiOutlineShoppingCart size={24} title="Cart" color="#333" />
           </button>
         </div>
-        <Link to={`/products/abc`}>
-          <img
-            src={product?.images[0]?.url}
-            alt={product?.name}
-            loading="lazy"
-            className="w-full h-[170px] object-contain"
-          />
-        </Link>
+
+        <div
+          className={`z-10 h-[150px] w-full absolute -bottom-0 bg-white border-t shadow left-0 right-0 ${
+            hover || visible ? "opacity-1" : "opacity-0"
+          } duration-300 transition-all flex flex-col justify-center items-center gap-2`}
+        >
+          {product?.stock === 0 ? (
+            <Button>Not in Stock</Button>
+          ) : (
+            <>
+              <AddToCart
+                count={count}
+                onDecrement={handleDecrement}
+                onIncrement={handleIncrement}
+                product={product}
+              />
+              <Button className="mt-3" onClick={handleAddToCart}>
+                <span className="mr-2">Add to Cart</span>
+                <AiOutlineShoppingCart size={20} />
+              </Button>
+            </>
+          )}
+        </div>
+        <div>
+          <Link to={`/products/abc`}>
+            <img
+              src={product?.images[0]?.url}
+              alt={product?.name}
+              loading="lazy"
+              className="w-full h-[170px] object-contain"
+            />
+          </Link>
+        </div>
 
         <div>
           <p className="text-blue-600 capitalize mt-2">{product?.brand}</p>

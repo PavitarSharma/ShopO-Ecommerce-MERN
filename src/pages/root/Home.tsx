@@ -65,7 +65,7 @@ const Home = () => {
         <div className="my-6">
           <Card>
             <div className="grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 flex-wrap md:gap-6 gap-10">
-              {categories &&
+              {categories?.length > 0 &&
                 categories?.map((item: Category) => {
                   const productItem = item?.name.replace(/\s/g, "-");
                   return (

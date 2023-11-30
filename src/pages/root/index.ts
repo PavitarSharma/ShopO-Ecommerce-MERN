@@ -5,3 +5,4 @@ export { default as Products } from "./Products";
 export { default as Events } from "./Events";
 export { default as Faq } from "./Faq";
 export { default as Profile } from "./profile/Profile";
+export { default as Cart } from "./Cart";

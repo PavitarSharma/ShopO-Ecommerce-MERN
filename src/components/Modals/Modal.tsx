@@ -35,7 +35,7 @@ const Modals: React.FC<ModalProps> = ({ isOpen, onClose, body, size }) => {
     flex
     items-center
     justify-center
-    z-[1000]
+    z-[10000]
     bg-black/40
     px-4
     

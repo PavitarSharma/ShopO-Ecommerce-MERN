@@ -1,15 +1,13 @@
 import { Footer, Header } from "@/components/Root";
-import usePrivateFetcher from "@/hooks/usePrivateFetcher";
+import useUserProfile from "@/hooks/useUserProfile";
 import { useAppDispatch } from "@/redux/hooks";
 import { getUser } from "@/redux/slices/userSlice";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import useSWR from "swr";
 
 const RootLayout = () => {
-  const privateFetcher = usePrivateFetcher();
   const dispatch = useAppDispatch();
-  const { data: user } = useSWR("/user/profile", privateFetcher);
+  const { data: user } = useUserProfile();
 
   useEffect(() => {
     if (user) {

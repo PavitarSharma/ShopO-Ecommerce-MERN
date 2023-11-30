@@ -9,6 +9,7 @@ const useRefreshToken = () => {
     const { data } = await axiosPublic.get("/auth/refresh", {
       withCredentials: true,
     });
+
     dispatch(setCredentials(data));
 
     return data.accessToken;

@@ -23,6 +23,9 @@ const Header = () => {
   const searchModal = useSearchModal();
   const { user } = useAppSelector(SelectUserState);
 
+
+  const wishlists = user?.wishlists;
+  const cart = user?.cart
   return (
     <>
       <div className="h-20 border-b border-b-gray-300 sticky top-0 left-0 right-0 flex items-center z-50 bg-white">
@@ -43,7 +46,7 @@ const Header = () => {
             />
             <div className="relative flex items-center">
               <div className="absolute -top-3 -right-2 bg-black text-white flex items-center justify-center rounded-full w-[18px] h-[18px] text-[9px]">
-                0
+                {wishlists && wishlists.length > 0 ? wishlists.length : 0}
               </div>
               <Tooltip
                 onClick={wishListToggle.onToggle}
@@ -54,7 +57,7 @@ const Header = () => {
             </div>
             <div className="relative flex items-center">
               <div className="absolute -top-[6px] -right-[10px] bg-black text-white flex items-center justify-center rounded-full w-[18px] h-[18px] text-[9px]">
-                0
+                {cart?.length}
               </div>
               <Tooltip
                 iconSize={24}

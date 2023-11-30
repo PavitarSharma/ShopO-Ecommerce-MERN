@@ -30,6 +30,8 @@ export interface IUser {
   updatedAt: Date;
   lat?: number;
   lng?: number;
+  wishlists: unknown[];
+  cart: [unknown];
 }
 
 export interface IVendor {
@@ -73,5 +75,12 @@ export interface Product {
   sold_out: number;
   reviews: number[];
   createdAt: string;
+  isFavorite?: boolean;
   __v?: number;
+}
+
+export interface CartItem {
+  product: Product;
+  unit: number;
+  _id: string;
 }
